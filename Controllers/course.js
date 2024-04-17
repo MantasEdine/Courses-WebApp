@@ -18,7 +18,7 @@ const getSingleCourse = async (req, res) => {
     return res.status(400).send("Invalid Course ID");
   }
   try {
-    const single_course = await Course.findById(id);
+    const single_course = await Course.findById(id).sort({ number: 1 });
 
     if (!single_course) {
       res.status(404).send("Not Found");

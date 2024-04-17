@@ -6,6 +6,8 @@ const morgan = require("morgan");
 const courseAPI = require("./Routes/course");
 const cors = require("cors");
 dotenv.config();
+const phoneNumberRegex =
+  /(?:(\+7)[ -])?\(?(?<firstpart>[489]d{2})\)?[ -]?(?<secondpart>d{3})[ -]?(?<thirdpart>d{2})[ -]?(?<fourthpart>d{2})/gm;
 
 const app = express();
 app.use(express.json());
