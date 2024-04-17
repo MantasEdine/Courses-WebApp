@@ -3,9 +3,10 @@ const schema = mongoose.Schema;
 
 const courseSchema = new schema(
   {
-    name: String,
-    number: Number,
+    name: { type: String, require: true },
+    number: { type: Number, require: true },
     date: { type: Date, default: Date.now },
+    isPublished: { type: Boolean, default: true },
   },
   { timestamps: true }
 );

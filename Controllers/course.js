@@ -1,9 +1,11 @@
 const Course = require("../Schemas/schema");
 const { isValidObjectId } = require("../middlewares/mongoose-validation");
-
+const { joiValidation } = require("../middlewares/joiValidation");
 const getCourses = async (req, res) => {
   try {
-    const courses = await Course.find().sort({ number: 1 });
+    const courses = await Course.find().sort({
+      number: 1,
+    });
     if (Course.length === 0) {
       res.status(404).send("No courses found.");
     } else res.status(200).send(courses);
@@ -32,7 +34,10 @@ const getSingleCourse = async (req, res) => {
 
 const createCourse = async (req, res) => {
   const data = req.body;
-
+  const error = joiValidation(data);
+  if (error) {
+    return res.status(400).send(error.details[0].message);
+  }
   try {
     const existingCourse = await Course.findOne({
       name: data.name,
