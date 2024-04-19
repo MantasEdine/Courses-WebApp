@@ -1,4 +1,4 @@
-const Course = require("../Schemas/schema");
+const { Course } = require("../Schemas/schema");
 async function checkExist(data) {
   const existingCourse = await Course.findOne({
     name: data.name,
