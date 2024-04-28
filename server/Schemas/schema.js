@@ -14,7 +14,7 @@ const courseSchema = new Schema(
     number: { type: Number, required: true, unique: true },
     date: { type: Date, default: Date.now },
     isPublished: { type: Boolean, default: true },
-    Price: Number,
+    Price: { type: Number, min: 1 },
 
     category: {
       type: String,
@@ -22,7 +22,11 @@ const courseSchema = new Schema(
       enum: ["web", "mobile", "networking"],
       lowercase: true,
     },
-    author: { type: String, unique: true },
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Author",
+      index: true,
+    },
     tags: {
       type: Array,
       validate: {
@@ -47,13 +51,9 @@ const authorSchema = new Schema(
     },
     bio: { type: String, required: false, minlength: 30, maxlength: 150 },
     hasPublished: Boolean,
-    website: {
-      type: String,
-      required: function () {
-        return this.hasPublished;
-      },
-    },
+    website: { type: String, required: this.hasPublished ? true : false },
   },
+
   { timestamps: true }
 );
 const Course = mongoose.model("Course", courseSchema);

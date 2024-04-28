@@ -3,10 +3,15 @@ const { isValidObjectId } = require("../middlewares/mongoose-validation");
 const { joiValidation } = require("../middlewares/joiValidation");
 const { checkExist } = require("../middlewares/existValidation");
 const getCourses = async (req, res) => {
+  const page = req.query.page || 0;
+  const booksPerPage = 3;
   try {
-    const courses = await Course.find().sort({
-      number: 1,
-    });
+    const courses = await Course.find()
+      .sort({
+        number: 1,
+      })
+      .skip(page * booksPerPage)
+      .limit(3);
     if (courses.length === 0) {
       res.status(404).send("No courses found.");
     } else res.status(200).send(courses);
